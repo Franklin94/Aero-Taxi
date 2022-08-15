@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Vuelos {
     //Atributes:
     private String fecha;
@@ -7,25 +9,26 @@ public class Vuelos {
     private String destino;
     private boolean disponible;//Vuelo diponible.
     private int disppax; //Disponibilidad de pax.
-    private String tipo; //Tipo de avión.
+    private Avion avion; //Avión asignado.
     private int paxconfirmados; //Pax que viajan.
     private String horario; //Hora del vuelo.
     private float tiempovuelo; //Tiempo de vuelo.
     private String numvuelo; //Número de vuelo.
     private float costo;
+    private ArrayList<Cliente> pax; //Array de los clientes que viajarán en dicho vuelo.
     
     //Methods:
 
     public Vuelos() {
     }
 
-    public Vuelos(String fecha, String origen, String destino, boolean disponible, int disppax, String tipo, int paxconfirmados, String horario, float tiempovuelo, String numvuelo, float costo) {
+    public Vuelos(String fecha, String origen, String destino, boolean disponible, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, String numvuelo, float costo) {
         this.fecha = fecha;
         this.origen = origen;
         this.destino = destino;
         this.disponible = disponible;
         this.disppax = disppax;
-        this.tipo = tipo;
+        this.avion = avion;
         this.paxconfirmados = paxconfirmados;
         this.horario = horario;
         this.tiempovuelo = tiempovuelo;
@@ -53,8 +56,8 @@ public class Vuelos {
         return disppax;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Avion getAvion() {
+        return avion;
     }
 
     public int getPaxconfirmados() {
@@ -97,8 +100,8 @@ public class Vuelos {
         this.disppax = disppax;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setAvion(Avion avion) {
+        this.avion = avion;
     }
 
     public void setPaxconfirmados(int paxconfirmados) {
@@ -119,6 +122,14 @@ public class Vuelos {
 
     public void setCosto(float costo) {
         this.costo = costo;
+    }
+
+    public ArrayList<Cliente> getPax() {
+        return pax;
+    }
+
+    public void setPax(ArrayList<Cliente> pax) {
+        this.pax = pax;
     }
     
     

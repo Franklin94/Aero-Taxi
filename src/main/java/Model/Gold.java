@@ -14,8 +14,8 @@ public class Gold extends Avion{
         this.wifi = wifi;
     }
 
-    public Gold(boolean wifi, float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe) {
-        super(capcomb, costoxkm, maxpax, maxspeed, propulsión, tarifaxtipe);
+    public Gold(boolean wifi, float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe, String patente) {
+        super(capcomb, costoxkm, maxpax, maxspeed, propulsión, tarifaxtipe, patente);
         this.wifi = wifi;
     }
 

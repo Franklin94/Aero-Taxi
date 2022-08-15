@@ -8,19 +8,21 @@ public abstract class Avion {
     private float maxspeed; //Velocidad máxima en km/h; 
     private String propulsión; //Tipo de propulsion del motor: hélice, pistones, reacción.
     private int tarifaxtype; //Tarifa por tipo de avión;
+    private String patente;//Patente identificadora del avión.
     
     //Methods:
 
     public Avion() {
     }
 
-    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe) {
+    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe, String patente) {
         this.capcomb = capcomb;
         this.costoxkm = costoxkm;
         this.maxpax = maxpax;
         this.maxspeed = maxspeed;
         this.propulsión = propulsión;
         this.tarifaxtype = tarifaxtipe;
+        this.patente = patente;
     }
 
     public float getCapcomb() {
@@ -69,6 +71,22 @@ public abstract class Avion {
 
     public void setTarifaxtipe(int tarifaxtipe) {
         this.tarifaxtype = tarifaxtipe;
+    }
+
+    public int getTarifaxtype() {
+        return tarifaxtype;
+    }
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public void setTarifaxtype(int tarifaxtype) {
+        this.tarifaxtype = tarifaxtype;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
     }
     
     

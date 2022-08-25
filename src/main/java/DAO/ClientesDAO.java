@@ -1,0 +1,6 @@
+package DAO;
+
+public class ClientesDAO {
+    
+    //CREADOR DE CLIENTES, VERIFICACIÓN DE EXISTENCIA, DAR DE BAJA CLIENTE.
+}

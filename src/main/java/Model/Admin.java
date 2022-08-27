@@ -1,6 +1,7 @@
 package Model;
 package DAO;
 import DAO.AvionDAO;
+import DAO.ClientesDAO;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -13,10 +14,17 @@ public class Admin {
     private String password;
     private final boolean admin = true; //Condicion de ser admin.
     
-    // DAR DE ALTA(O BAJA) AVIONES, BUSCAR CLIENTES O VUELOS O AVIONES, CREAR OTROS ADMINS.
+    // BUSCAR CLIENTES O VUELOS, CREAR OTROS ADMINS.
     
     //Methods:
-
+    
+    //Buscar cliente:
+    public void buscarCliente(Cliente client){
+        ClientesDAO client1 = new ClienteDAO();
+        
+    
+    }
+    
     //Cargar aviones al sistema:
     public static void altaAvion() throws IOException{
         
@@ -146,7 +154,8 @@ public class Admin {
         String patente = input.next();
         AvionDAO access = new AvionDAO();
         ArrayList<Avion> planes = access.actualAvion();
-        Avion airplane,airplane2;
+        Avion airplane;
+        int k=0;
         
         if(planes != null){
             for(Avion aircraft: planes){
@@ -168,7 +177,7 @@ public class Admin {
                             System.out.println("Aircarft deleted succesfully.");
                             break;
                         case "3":
-                            System.err.println("Operación cancelada.");
+                            System.out.println("Operación cancelada.");
                             break;
                             
                         default:
@@ -177,7 +186,7 @@ public class Admin {
                     }
                 }
                 else{
-                    System.out.println("La patente ingresada no se corresponde con un avión pre-existente.");
+                    k++;
                 }
             }
             

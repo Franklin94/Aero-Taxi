@@ -6,24 +6,34 @@ public abstract class Avion {
     private float costoxkm; //Costo por km recorrido.
     private int maxpax; //Capacidad máxima de pasajeros;
     private float maxspeed; //Velocidad máxima en km/h; 
-    private String propulsión; //Tipo de propulsion del motor: hélice, pistones, reacción.
-    private int tarifaxtype; //Tarifa por tipo de avión;
+    private enum propulsión{ REACCION, HELICE , PISTONES}; //Tipo de propulsion del motor: hélice, pistones, reacción.
+    private enum tarifaxtype{BRONZE, SILVER, GOLD}; //Tarifa por tipo de avión;
     private String patente;//Patente identificadora del avión.
+    private boolean available; //Disponibilidad del avión.
+    private int tarifaxTipo; //Tarifa por tipo de avion.
     
     //Methods:
 
     public Avion() {
     }
 
-    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe, String patente) {
+    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String patente, boolean available, int tarifaxTipo) {
         this.capcomb = capcomb;
         this.costoxkm = costoxkm;
         this.maxpax = maxpax;
         this.maxspeed = maxspeed;
-        this.propulsión = propulsión;
-        this.tarifaxtype = tarifaxtipe;
         this.patente = patente;
+        this.available = available;
     }
+
+    public int getTarifaxTipo() {
+        return tarifaxTipo;
+    }
+
+    public void setTarifaxTipo(int tarifaxTipo) {
+        this.tarifaxTipo = tarifaxTipo;
+    }
+    
 
     public float getCapcomb() {
         return capcomb;
@@ -41,13 +51,6 @@ public abstract class Avion {
         return maxspeed;
     }
 
-    public String getPropulsión() {
-        return propulsión;
-    }
-
-    public int getTarifaxtipe() {
-        return tarifaxtype;
-    }
 
     public void setCapcomb(float capcomb) {
         this.capcomb = capcomb;
@@ -65,28 +68,22 @@ public abstract class Avion {
         this.maxspeed = maxspeed;
     }
 
-    public void setPropulsión(String propulsión) {
-        this.propulsión = propulsión;
-    }
-
-    public void setTarifaxtipe(int tarifaxtipe) {
-        this.tarifaxtype = tarifaxtipe;
-    }
-
-    public int getTarifaxtype() {
-        return tarifaxtype;
-    }
 
     public String getPatente() {
         return patente;
     }
 
-    public void setTarifaxtype(int tarifaxtype) {
-        this.tarifaxtype = tarifaxtype;
-    }
 
     public void setPatente(String patente) {
         this.patente = patente;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
     
     

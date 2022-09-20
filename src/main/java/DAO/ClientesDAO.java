@@ -13,10 +13,11 @@ public class ClientesDAO {
     //CREADOR DE CLIENTES, VERIFICACIÓN DE EXISTENCIA, DAR DE BAJA CLIENTE.
     
     //Methods:
-    
+    public ClientesDAO(){
+    }
+
     //Eliminar un cliente:
-    public void modificarCliente() throws IOException{
-        
+    public void modificarCliente() throws IOException {
         Scanner input = new Scanner(System.in);
         ArrayList<Cliente> clients = actualCliente();
         boolean flag = true;
@@ -39,7 +40,14 @@ public class ClientesDAO {
                     k++;
                 }
             }
-            if(clients.size()==k){}
+            if(clients.size() == k){
+                System.out.println("El DNI ingresado es incorrecto o el usuario no existe.");
+                System.out.println("Seleccione la operación que desea realizar:\n1.Modificar sus datos (presione 1). \n2.Cancelar (presione cualquier tecla)");
+                String ans = input.next();
+                if(!ans.equals("1")){
+                    flag = false;
+                }
+            }
         }
     }
     

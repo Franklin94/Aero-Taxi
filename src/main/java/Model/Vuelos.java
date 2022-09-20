@@ -1,57 +1,53 @@
 package Model;
 
+import DAO.DestinosDAO;
 import java.util.ArrayList;
+
 
 public class Vuelos {
     //Atributes:
     private String fecha;
-    private String origen;
-    private String destino;
-    private boolean disponible;//Vuelo diponible.
+    private DestinosDAO.localidad origen;
+    private DestinosDAO.localidad destino;
     private int disppax; //Disponibilidad de pax.
     private Avion avion; //Avión asignado.
     private int paxconfirmados; //Pax que viajan.
     private String horario; //Hora del vuelo.
     private float tiempovuelo; //Tiempo de vuelo.
-    private String numvuelo; //Número de vuelo.
     private float costo;
-    private ArrayList<Cliente> pax; //Array de los clientes que viajarán en dicho vuelo.
-    
+    private Cliente pax; //Array de los clientes que viajarán en dicho vuelo.
+    private ArrayList<Persona> passengers; //Acompañantes del vuelo.
     //Methods:
 
     public Vuelos() {
     }
 
-    public Vuelos(String fecha, String origen, String destino, boolean disponible, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, String numvuelo, float costo) {
+    public Vuelos(String fecha, DestinosDAO.localidad origen, DestinosDAO.localidad destino, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, float costo,ArrayList<Persona> passengers) {
         this.fecha = fecha;
         this.origen = origen;
         this.destino = destino;
-        this.disponible = disponible;
         this.disppax = disppax;
         this.avion = avion;
         this.paxconfirmados = paxconfirmados;
         this.horario = horario;
         this.tiempovuelo = tiempovuelo;
-        this.numvuelo = numvuelo;
         this.costo = costo;
+        this.passengers = passengers;
     }
 
     public String getFecha() {
         return fecha;
     }
 
-    public String getOrigen() {
+    public DestinosDAO.localidad getOrigen() {
         return origen;
     }
 
-    public String getDestino() {
+    public DestinosDAO.localidad getDestino() {
         return destino;
     }
 
-    public boolean isDisponible() {
-        return disponible;
-    }
-
+    
     public int getDisppax() {
         return disppax;
     }
@@ -72,10 +68,6 @@ public class Vuelos {
         return tiempovuelo;
     }
 
-    public String getNumvuelo() {
-        return numvuelo;
-    }
-
     public float getCosto() {
         return costo;
     }
@@ -84,17 +76,14 @@ public class Vuelos {
         this.fecha = fecha;
     }
 
-    public void setOrigen(String origen) {
+    public void setOrigen(DestinosDAO.localidad origen) {
         this.origen = origen;
     }
 
-    public void setDestino(String destino) {
+    public void setDestino(DestinosDAO.localidad destino) {
         this.destino = destino;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
 
     public void setDisppax(int disppax) {
         this.disppax = disppax;
@@ -116,19 +105,15 @@ public class Vuelos {
         this.tiempovuelo = tiempovuelo;
     }
 
-    public void setNumvuelo(String numvuelo) {
-        this.numvuelo = numvuelo;
-    }
-
     public void setCosto(float costo) {
         this.costo = costo;
     }
 
-    public ArrayList<Cliente> getPax() {
+    public Cliente getPax() {
         return pax;
     }
 
-    public void setPax(ArrayList<Cliente> pax) {
+    public void setPax(Cliente pax) {
         this.pax = pax;
     }
     

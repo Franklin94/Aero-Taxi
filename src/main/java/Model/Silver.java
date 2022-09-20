@@ -9,9 +9,10 @@ public class Silver extends Avion{
     public Silver() {
     }
 
-    public Silver(float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtipe, String patente) {
-        super(capcomb, costoxkm, maxpax, maxspeed, propulsión, tarifaxtipe, patente);
+    public Silver(float capcomb, float costoxkm, int maxpax, float maxspeed, String propulsión, int tarifaxtype, String patente, boolean available,  int tarifaxTipo) {
+        super(capcomb, costoxkm, maxpax, maxspeed, patente, available, tarifaxTipo);
     }
+
      
     public boolean isCatering() {
         return catering;

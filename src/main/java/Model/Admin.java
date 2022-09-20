@@ -5,12 +5,10 @@ import DAO.ClientesDAO;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
-public class Admin {
+public class Admin extends Persona{
 
     //Atributes:
-    private String nombre;
-    private String apellido;
-    private String DNI;
+    
     private String password;
     private final boolean admin = true; //Condicion de ser admin.
     
@@ -19,10 +17,46 @@ public class Admin {
     //Methods:
     
     //Buscar cliente:
-    public void buscarCliente(Cliente client){
-        ClientesDAO client1 = new ClienteDAO();
+    public Cliente buscarCliente(String DNI){
         
-    
+        ClientesDAO clients = new ClientesDAO();
+        ArrayList<Cliente> clientsList = clients.actualCliente();
+        Cliente c1 = null;
+        Scanner input = new Scanner(System.in);
+        int k=0;
+        boolean flag = true;
+        
+        if(clientsList != null){
+            
+            while(flag == true){
+                for(Cliente client: clientsList){
+                    if(client.getDNI().equals(DNI)){
+                        c1 = client;
+                    }
+                    else{
+                        k++;
+                    }
+                }
+                if(clientsList.size() == k){
+                    System.out.println("El DNI ingresado no se corresponde con el de ningún cliente en la base de datos.");
+                    System.out.println("¿Desea continuar con la búsqueda?\n1.Sí (presione 1);\n2.Cancelar (presione cualquier otra tecla).");
+                    String answer = input.next();
+
+                    if(!answer.equals("1")){
+                        flag = false;
+                    }
+                    else{
+                        System.out.println("Reingrese el DNI del cliente que desea buscar:");
+                        DNI = input.next();
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("No hay clientes registrados aún.");
+        }
+        
+        return c1;
     }
     
     //Cargar aviones al sistema:
@@ -58,7 +92,7 @@ public class Admin {
                     input.nextLine();//Limpia el scanner.
                     System.out.println("Ingrese la tarifa correspondiente al tipo de avión:");
                     int tarifaxtipe = input.nextInt();
-                    Bronze bnz = new Bronze(capcomb,costoxkm, maxpax,maxspeed,propulsión,tarifaxtipe, patente);
+                    Bronze bnz = new Bronze(capcomb,costoxkm, maxpax,maxspeed,propulsión,tarifaxtipe, patente,true, tarifaxtipe);
                     
                     AvionDAO a = new AvionDAO();
                     a.guardarAvion(bnz);
@@ -84,7 +118,7 @@ public class Admin {
                     input.nextLine();//Limpia el scanner.
                     System.out.println("Ingrese la tarifa correspondiente al tipo de avión:");
                     int tarifaxtipe2 = input.nextInt();
-                    Silver slv = new Silver(capcomb2, costoxkm2, maxpax2, maxspeed2, propulsión2, tarifaxtipe2, patente2);
+                    Silver slv = new Silver(capcomb2, costoxkm2, maxpax2, maxspeed2, propulsión2, tarifaxtipe2, patente2,true,tarifaxtipe2);
                     
                     AvionDAO b = new AvionDAO();
                     b.guardarAvion(slv);
@@ -119,7 +153,7 @@ public class Admin {
                     else{
                         wifi = false;
                     }
-                    Gold gld = new Gold(wifi, capcomb3, costoxkm3,maxpax3, maxspeed3, propulsión3, tarifaxtipe3, patente3);
+                    Gold gld = new Gold(wifi, capcomb3, costoxkm3,maxpax3, maxspeed3, propulsión3, tarifaxtipe3, patente3, true,tarifaxtipe3);
                     
                     AvionDAO c = new AvionDAO();
                     c.guardarAvion(gld);

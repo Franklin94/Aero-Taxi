@@ -1,13 +1,13 @@
 package Model;
 
-public class Cliente {
+import java.util.ArrayList;
+
+public class Cliente extends Persona{
     
     //Atributes:
-    private String nombre;
-    private String apellido;
-    private String DNI;
-    private String edad;
+    
     private String password;//Contraseña para ingresar al sistema.
+    
     
     //Methods:
 
@@ -15,18 +15,16 @@ public class Cliente {
     }
 
     public Cliente(String nombre, String apellido, String DNI, String edad) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.DNI = DNI;
-        this.edad = edad;
+        super(nombre, apellido, DNI, edad);
+        
     }
 
     public String getNombre() {
-        return nombre;
+        return super.name;
     }
 
     public String getApellido() {
-        return apellido;
+        return super.surname;
     }
 
     public String getDNI() {
@@ -34,15 +32,15 @@ public class Cliente {
     }
 
     public String getEdad() {
-        return edad;
+        return super.age;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        super.name = nombre;
     }
 
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        super.surname = apellido;
     }
 
     public void setDNI(String DNI) {
@@ -50,7 +48,7 @@ public class Cliente {
     }
 
     public void setEdad(String edad) {
-        this.edad = edad;
+        super.age = edad;
     }
 
     public String getPassword() {

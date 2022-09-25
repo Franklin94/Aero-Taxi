@@ -6,20 +6,13 @@ import Model.Vuelos;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class VuelosDAO {
     
     //CREADOR DE VUELOS, MODIFICADOR DE DATOS, PROGRAMACIÓN DE VUELOS, CANCELACIÓN DE VUELOS.
     
-    public Vuelos flightCreator(String fecha, DestinosDAO.localidad origen, DestinosDAO.localidad destino, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, float costo,ArrayList<Persona> passengers){
-        
-        Vuelos flight = new Vuelos(fecha, origen, destino, disppax, avion, paxconfirmados, horario, tiempovuelo, costo, passengers);
-        
-        
-        
-        return flight;
-    }
     
     //Saver de vuelos:
     public void flightSaver(Vuelos vuelo){

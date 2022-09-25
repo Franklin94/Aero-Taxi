@@ -1,12 +1,13 @@
 package Model;
 
 import DAO.DestinosDAO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class Vuelos {
     //Atributes:
-    private String fecha;
+    private LocalDate departureDate;
     private DestinosDAO.localidad origen;
     private DestinosDAO.localidad destino;
     private int disppax; //Disponibilidad de pax.
@@ -15,15 +16,15 @@ public class Vuelos {
     private String horario; //Hora del vuelo.
     private float tiempovuelo; //Tiempo de vuelo.
     private float costo;
-    private Cliente pax; //Array de los clientes que viajarán en dicho vuelo.
     private ArrayList<Persona> passengers; //Acompañantes del vuelo.
+    private boolean status; //Cancelado o confirmado.
     //Methods:
 
     public Vuelos() {
     }
 
-    public Vuelos(String fecha, DestinosDAO.localidad origen, DestinosDAO.localidad destino, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, float costo,ArrayList<Persona> passengers) {
-        this.fecha = fecha;
+    public Vuelos(LocalDate departureDate, DestinosDAO.localidad origen, DestinosDAO.localidad destino, int disppax, Avion avion, int paxconfirmados, String horario, float tiempovuelo, float costo,ArrayList<Persona> passengers, boolean status) {
+        this.departureDate = departureDate;
         this.origen = origen;
         this.destino = destino;
         this.disppax = disppax;
@@ -33,10 +34,11 @@ public class Vuelos {
         this.tiempovuelo = tiempovuelo;
         this.costo = costo;
         this.passengers = passengers;
+        this.status = status;
     }
 
-    public String getFecha() {
-        return fecha;
+    public LocalDate getFecha() {
+        return departureDate;
     }
 
     public DestinosDAO.localidad getOrigen() {
@@ -72,8 +74,8 @@ public class Vuelos {
         return costo;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFecha(LocalDate departureDate) {
+        this.departureDate = departureDate;
     }
 
     public void setOrigen(DestinosDAO.localidad origen) {
@@ -109,14 +111,12 @@ public class Vuelos {
         this.costo = costo;
     }
 
-    public Cliente getPax() {
-        return pax;
+    public ArrayList<Persona> getPassengers() {
+        return passengers;
     }
 
-    public void setPax(Cliente pax) {
-        this.pax = pax;
+    public void setPassengers(ArrayList<Persona> passengers) {
+        this.passengers = passengers;
     }
-    
-    
        
 }

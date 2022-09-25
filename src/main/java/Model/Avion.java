@@ -10,7 +10,7 @@ public abstract class Avion {
     private enum tarifaxtype{BRONZE, SILVER, GOLD}; //Tarifa por tipo de avión;
     private String patente;//Patente identificadora del avión.
     private boolean available; //Disponibilidad del avión.
-    private int tarifaxTipo; //Tarifa por tipo de avion.
+    
     
     //Methods:
 
@@ -25,15 +25,7 @@ public abstract class Avion {
         this.patente = patente;
         this.available = available;
     }
-
-    public int getTarifaxTipo() {
-        return tarifaxTipo;
-    }
-
-    public void setTarifaxTipo(int tarifaxTipo) {
-        this.tarifaxTipo = tarifaxTipo;
-    }
-    
+  
 
     public float getCapcomb() {
         return capcomb;

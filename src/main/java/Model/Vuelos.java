@@ -118,5 +118,22 @@ public class Vuelos {
     public void setPassengers(ArrayList<Persona> passengers) {
         this.passengers = passengers;
     }
+
+    public LocalDate getDepartureDate() {
+        return departureDate;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setDepartureDate(LocalDate departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
        
 }

@@ -2,6 +2,7 @@ package DAO;
 
 import Core.Sistema;
 import Model.Cliente;
+import Model.Persona;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;

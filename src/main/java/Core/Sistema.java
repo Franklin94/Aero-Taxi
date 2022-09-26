@@ -114,8 +114,8 @@ public class Sistema {
                 Cliente client = mapper.readValue(file, Cliente.class);
                 psw2 = client.getPassword();
 
-                if(psw.equals(psw2)){ // LLAMAR(1ero crearlos) MÉTODOS PARA REALIZAR LAS TRANSACCIONES NECESARIAS.
-                    //COMPRA DE PASAJES, CANCELACIONES, CONSULTA DE VUELOS DISPONIBLES.
+                if(psw.equals(psw2)){
+                    
                     System.out.println("Bienvenido a AeroTaxi "+client.getNombre()+" "+client.getApellido());
                     String ans = input.next();
                     String ans2;
@@ -135,7 +135,6 @@ public class Sistema {
                                 }
                                 break;
                             case "2":
-                                //INSERTAR MÉTODO VER MIS VUELOS.
                                 consultarMisVuelos(dni);//ArrayList de los vuelos del cliente.
                                 System.out.println("¿Desea realizar alguna otra operación?\n1.Sí\n2.No (presione cualquier otra tecla)");
                                 ans2 = input.next();
@@ -145,7 +144,6 @@ public class Sistema {
                                 }
                                 break;
                             case "3":
-                                //INSERTAR MÉTODO CANCELACIONES.
                                 ArrayList<Vuelos> myFlights = consultarMisVuelos(dni);
                                 System.out.println("Seleccione el vuelo que desea cancelar:");
                                 String ans3 = input.next();
@@ -171,8 +169,6 @@ public class Sistema {
                         psw2 = input.next();
                     }
                     
-                    // LLAMAR(1ero crearlos) MÉTODOS PARA REALIZAR LAS TRANSACCIONES NECESARIAS.
-                    //COMPRA DE PASAJES, CANCELACIONES, CONSULTA DE VUELOS DISPONIBLES.
                 }
             }catch(IOException e){
                 e.getMessage();
@@ -195,7 +191,13 @@ public class Sistema {
                 }
             }
         }
-    }
+            System.out.println("¿Desea realizar alguna otra operación?\nSeleccione 1(uno) en caso afirmativo o cualquier otra tecla en caso contrario.");
+            String answer6 = input.next();
+            if(!answer6.equals("1")){
+                access = false;
+                System.out.println("Muchas gracias por confiar en AeroTaxi. Hasta pronto!");
+            }
+        }
     }
     //Compra de pasajes:
     public void comprarVuelo(){

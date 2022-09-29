@@ -22,8 +22,6 @@ import java.util.Scanner;
 
 public class Sistema {
     
-//Atributes:
-    boolean working; //Para hacer trabajar al sistema.
 
 //Methods:
     //Sign in:
@@ -190,7 +188,7 @@ public class Sistema {
                         break;
                 }
             }
-        }
+        }//Log out:
             System.out.println("¿Desea realizar alguna otra operación?\nSeleccione 1(uno) en caso afirmativo o cualquier otra tecla en caso contrario.");
             String answer6 = input.next();
             if(!answer6.equals("1")){

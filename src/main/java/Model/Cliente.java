@@ -1,6 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
 
 public class Cliente extends Persona{
     
@@ -27,6 +26,7 @@ public class Cliente extends Persona{
         return super.surname;
     }
 
+    @Override
     public String getDNI() {
         return DNI;
     }
@@ -43,6 +43,7 @@ public class Cliente extends Persona{
         super.surname = apellido;
     }
 
+    @Override
     public void setDNI(String DNI) {
         this.DNI = DNI;
     }
@@ -57,6 +58,20 @@ public class Cliente extends Persona{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
     
 }

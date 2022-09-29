@@ -2,23 +2,21 @@ package Core;
 package Model;
 import DAO.AvionDAO;
 import DAO.ClientesDAO;
+import DAO.VuelosDAO;
 import Model.Avion;
 import Model.Bronze;
 import Model.Cliente;
 import Model.Gold;
+import Model.Persona;
 import Model.Silver;
+import Model.Vuelos;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class AdminCore {
-        //Atributes:
-    
-    private String password;
-    private final boolean admin = true; //Condicion de ser admin.
-    
-    // BUSCAR CLIENTES O VUELOS, CREAR OTROS ADMINS.
-    
+public class AdminCore {   
     //Methods:
     
     //Buscar cliente:
@@ -63,7 +61,55 @@ public class AdminCore {
         
         return c1;
     }
-    
+    //Mostrar todos los clientes registrados:
+    public void mostrarDataClientes(){
+        
+        ClientesDAO c1 = new ClientesDAO();
+        VuelosDAO v1 = new VuelosDAO();
+        ArrayList<Cliente> clientesHistóricos = c1.actualCliente();
+        ArrayList<Avion> planes = null;
+        boolean bronze, silver, gold;
+        bronze=silver=gold=false;
+        float preciosAcumulados = 0;
+        
+        for(Cliente client: clientesHistóricos){//Datos personales de cada cliente:
+            
+            for(Vuelos vueloHistórico: v1.confirmedFlights()){//Búsqueda de los vuelos realizados por el cliente.
+                ArrayList<Persona> people = vueloHistórico.getPassengers();
+
+                if(people.contains(client)){
+                    Avion plane = vueloHistórico.getAvion();
+                    planes.add(plane);
+                    preciosAcumulados = vueloHistórico.getCosto() + preciosAcumulados;
+                }
+            }
+            System.out.println(client.toString());
+            System.out.println("Dinero total gastado por el cliente: $"+preciosAcumulados);
+        }
+        for(Avion plane: planes){
+            if(plane instanceof Bronze){
+                bronze = true;
+            }
+            else if(plane instanceof Silver){
+                silver = true;
+            }
+            else{
+                gold = true;
+            }
+        }
+        if(gold == true){
+            System.out.println("La mejor categoría utilizada por el cliente fue Gold.");
+        }
+        else if(silver == true){
+            System.out.println("La mejor categoría utilizada por el cliente fue Silver.");
+        }
+        else{
+            System.out.println("La mejor categoría utilizada por el cliente fue Bronze.");
+        }
+        
+        
+        
+    }
     //Cargar aviones al sistema:
     public void altaAvion() throws IOException{
         
@@ -247,6 +293,31 @@ public class AdminCore {
         }
         else{
             System.out.println("Aún no hay aviones registrados.");
+        }
+    }
+    //Consulta los vuelos en la fecha específica que sea ingresada:
+    public void consultDailyFlights(){
+        
+        Scanner input = new Scanner(System.in);
+        System.out.println("Ingrese la fecha de los vuelos que desea visualizar: (dd-mm-yyyy)");
+        String date = input.next();
+        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        VuelosDAO v1 = new VuelosDAO();
+        ArrayList<Vuelos> flightsAtGivenDate = null;
+        
+        for(Vuelos flight: v1.confirmedFlights()){
+            if(flight.getFecha().equals(parsedDate)){
+                flightsAtGivenDate.add(flight);
+            }
+        }
+        if(flightsAtGivenDate != null){
+            
+            for(Vuelos flight: flightsAtGivenDate){
+                System.out.println(flight);
+            }
+        }
+        else{
+            System.out.println("No hay vuelos previstos para la fecha ingresada.");
         }
     }
 }

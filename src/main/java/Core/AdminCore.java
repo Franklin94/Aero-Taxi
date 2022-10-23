@@ -2,6 +2,8 @@ package Core;
 package Model;
 import DAO.AvionDAO;
 import DAO.ClientesDAO;
+import DAO.DestinosDAO;
+import DAO.DestinosDAO.localidad;
 import DAO.VuelosDAO;
 import Model.Avion;
 import Model.Bronze;
@@ -12,7 +14,6 @@ import Model.Silver;
 import Model.Vuelos;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -85,33 +86,31 @@ public class AdminCore {
             }
             System.out.println(client.toString());
             System.out.println("Dinero total gastado por el cliente: $"+preciosAcumulados);
-        }
-        for(Avion plane: planes){
-            if(plane instanceof Bronze){
+            for(Avion plane: planes){
+                if(plane instanceof Bronze){
                 bronze = true;
-            }
-            else if(plane instanceof Silver){
+                }
+                else if(plane instanceof Silver){
                 silver = true;
+                }
+                else{
+                gold = true;
+                }
+            }
+            if(gold == true){
+                System.out.println("La mejor categoría utilizada por el cliente fue Gold.");
+            }
+            else if(silver == true){
+                System.out.println("La mejor categoría utilizada por el cliente fue Silver.");
             }
             else{
-                gold = true;
+                System.out.println("La mejor categoría utilizada por el cliente fue Bronze.");
             }
         }
-        if(gold == true){
-            System.out.println("La mejor categoría utilizada por el cliente fue Gold.");
-        }
-        else if(silver == true){
-            System.out.println("La mejor categoría utilizada por el cliente fue Silver.");
-        }
-        else{
-            System.out.println("La mejor categoría utilizada por el cliente fue Bronze.");
-        }
-        
-        
-        
+       
     }
     //Cargar aviones al sistema:
-    public void altaAvion() throws IOException{
+    public void altaAvion(){
         
         
         boolean flag = true;
@@ -143,11 +142,14 @@ public class AdminCore {
                     input.nextLine();//Limpia el scanner.
                     System.out.println("Ingrese la tarifa correspondiente al tipo de avión:");
                     int tarifaxtipe = input.nextInt();
-                    Bronze bnz = new Bronze(capcomb,costoxkm, maxpax,maxspeed,propulsión,tarifaxtipe, patente,true, tarifaxtipe);
+                    Bronze bnz = new Bronze(capcomb,costoxkm, maxpax,maxspeed,propulsión,tarifaxtipe, patente,true, tarifaxtipe,null);
                     
                     AvionDAO a = new AvionDAO();
-                    a.guardarAvion(bnz);
-                    
+                    try{
+                        a.guardarAvion(bnz);
+                    }catch(IOException e){
+                        System.out.println("Hubo un error en la carga del avión.");
+                    }
                     break;
                 
                 case "2"://Creación de un Silver:
@@ -169,10 +171,14 @@ public class AdminCore {
                     input.nextLine();//Limpia el scanner.
                     System.out.println("Ingrese la tarifa correspondiente al tipo de avión:");
                     int tarifaxtipe2 = input.nextInt();
-                    Silver slv = new Silver(capcomb2, costoxkm2, maxpax2, maxspeed2, propulsión2, tarifaxtipe2, patente2,true,tarifaxtipe2);
+                    Silver slv = new Silver(capcomb2, costoxkm2, maxpax2, maxspeed2, propulsión2, tarifaxtipe2, patente2,true,tarifaxtipe2,null);
                     
                     AvionDAO b = new AvionDAO();
-                    b.guardarAvion(slv);
+                    try{    
+                        b.guardarAvion(slv);
+                    }catch(IOException e){
+                        System.out.println("Hubo un error en la carga del avión.");
+                    }
                     break;
                 
                 case "3"://Creación de un Gold:
@@ -204,10 +210,14 @@ public class AdminCore {
                     else{
                         wifi = false;
                     }
-                    Gold gld = new Gold(wifi, capcomb3, costoxkm3,maxpax3, maxspeed3, propulsión3, tarifaxtipe3, patente3, true,tarifaxtipe3);
+                    Gold gld = new Gold(wifi, capcomb3, costoxkm3,maxpax3, maxspeed3, propulsión3, tarifaxtipe3, patente3, true,tarifaxtipe3,null);
                     
                     AvionDAO c = new AvionDAO();
-                    c.guardarAvion(gld);
+                    try{
+                        c.guardarAvion(gld);
+                    }catch(IOException e){
+                        System.out.println("Hubo un error en la carga del avión.");
+                    }
                     break;
                 
                 case "4": //Opción crear avión elegida erróneamente.
@@ -232,7 +242,7 @@ public class AdminCore {
         
         }
     //DAR DE BAJA O MODIFICAR AVIONES EXISTENTES
-    public void modificaAvion() throws IOException{
+    public void modificaAvion(){
         
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese la patente del avión que desea modificar/eliminar:");
@@ -295,29 +305,60 @@ public class AdminCore {
             System.out.println("Aún no hay aviones registrados.");
         }
     }
-    //Consulta los vuelos en la fecha específica que sea ingresada:
-    public void consultDailyFlights(){
+    private ArrayList<Vuelos> flightsBrowser(LocalDate date){
         
-        Scanner input = new Scanner(System.in);
-        System.out.println("Ingrese la fecha de los vuelos que desea visualizar: (dd-mm-yyyy)");
-        String date = input.next();
-        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        
         VuelosDAO v1 = new VuelosDAO();
         ArrayList<Vuelos> flightsAtGivenDate = null;
         
         for(Vuelos flight: v1.confirmedFlights()){
-            if(flight.getFecha().equals(parsedDate)){
+            if(flight.getFecha().equals(date)){
                 flightsAtGivenDate.add(flight);
             }
         }
+        return flightsAtGivenDate;
+    }
+    //Consulta los vuelos en la fecha específica que sea ingresada:
+    public void consultDailyFlights(LocalDate date){
+        
+        ArrayList<Vuelos> flightsAtGivenDate = flightsBrowser(date);
+        int k=1;//Contador de vuelos.
+        
         if(flightsAtGivenDate != null){
             
             for(Vuelos flight: flightsAtGivenDate){
-                System.out.println(flight);
+                System.out.println((k)+flight.toString());
+                k++;
             }
         }
         else{
             System.out.println("No hay vuelos previstos para la fecha ingresada.");
         }
+    }
+    //Modificación de vuelos:
+    public void modificarVuelo(Vuelos flight,LocalDate departureDate, DestinosDAO.localidad origen, DestinosDAO.localidad destino, Avion avion, int paxconfirmados, String horario,ArrayList<Persona> passengers){
+        
+        VuelosDAO v = new VuelosDAO();
+        v.modifyFlight(flight, departureDate, origen, destino, avion, paxconfirmados, horario, passengers);
+       
+    }
+    public DestinosDAO.localidad selectTown(String option){
+        
+        localidad selection = null;
+        switch(option){
+            case "1":
+                selection = DestinosDAO.localidad.BuenosAires;
+                break;
+            case "2":
+                selection = DestinosDAO.localidad.Cordoba;
+                break;
+            case "3":
+                selection = DestinosDAO.localidad.SANTIAGO;
+                break;
+            case "4":
+                selection = DestinosDAO.localidad.MONTEVIDEO;
+                break;
+        }
+        return selection;                                    
     }
 }

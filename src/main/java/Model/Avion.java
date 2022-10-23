@@ -1,5 +1,7 @@
 package Model;
 
+import java.time.LocalDate;
+
 public abstract class Avion {
     //Atributes:
     private float capcomb; //Capacidad de combustible;
@@ -10,20 +12,29 @@ public abstract class Avion {
     private enum tarifaxtype{BRONZE, SILVER, GOLD}; //Tarifa por tipo de avión;
     private String patente;//Patente identificadora del avión.
     private boolean available; //Disponibilidad del avión.
-    
+    private LocalDate dateOfUse;//Fecha en la que el avión está siendo utilizado.
     
     //Methods:
 
     public Avion() {
     }
 
-    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String patente, boolean available, int tarifaxTipo) {
+    public Avion(float capcomb, float costoxkm, int maxpax, float maxspeed, String patente, boolean available, int tarifaxTipo, LocalDate dateOfUse) {
         this.capcomb = capcomb;
         this.costoxkm = costoxkm;
         this.maxpax = maxpax;
         this.maxspeed = maxspeed;
         this.patente = patente;
         this.available = available;
+        this.dateOfUse = dateOfUse;
+    }
+
+    public LocalDate getDateOfUse() {
+        return dateOfUse;
+    }
+
+    public void setDateOfUse(LocalDate dateOfUse) {
+        this.dateOfUse = dateOfUse;
     }
   
 

@@ -6,14 +6,15 @@ public class Admin extends Persona{
     //Atributes:
     
     private String password;
-    private final boolean admin = true; //Condicion de ser admin.
+    private boolean active; //Condicion para poder ingresar aún al sistema (borrado o no).
     
     // BUSCAR CLIENTES O VUELOS, CREAR OTROS ADMINS.
     
     //Methods:
 
-    public Admin(String name, String surname, String DNI, String age) {
+    public Admin(String name, String surname, String DNI, String age, String password) {
         super(name, surname, DNI, age);
+        this.password = password;
     }
 
     public Admin() {
@@ -23,10 +24,14 @@ public class Admin extends Persona{
         return password;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public boolean isActive() {
+        return active;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     @Override
     public String getName() {
         return name;

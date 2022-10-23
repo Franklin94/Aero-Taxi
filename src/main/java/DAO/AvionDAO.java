@@ -7,6 +7,8 @@ import Model.Silver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,7 +59,6 @@ public class AvionDAO {
                 e.getMessage();
                 e.getStackTrace();
             }
-            System.out.println("El avión ha sido guardado exitosamente.");
         }
         else{
             aircraft.add(plane);
@@ -68,33 +69,30 @@ public class AvionDAO {
                 e.getMessage();
                 e.getStackTrace();
             }
-            System.out.println("Los aviones han sido guardados exitosamente.");
         }
     //Aviones disponibles para realizar vuelos:
         
-    public ArrayList<Avion> availablePlanes(){
+    public ArrayList<Avion> availablePlanes(String date){
             
-            ArrayList<Avion> allPlanes = actualAvion();
-            ArrayList<Avion> availablePlanes = null;
-            int k=0;
+        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yy"));
+        ArrayList<Avion> allPlanes = actualAvion();
+        ArrayList<Avion> availablePlanes = null;
+        int k=0;
             
-            for(Avion aircraft: allPlanes){
-                if(aircraft.isAvailable() == true){
-                    availablePlanes.add(aircraft);
-                }
-                else{
-                    k++;
-                }
+        for(Avion aircraft: allPlanes){
+            if(aircraft.getDateOfUse().equals(parsedDate)){
+                aircraft.setAvailable(false);
             }
-            if(allPlanes.size() == k){
-                System.out.println("No hay aviones disponibles. Vuelva a intentar más tarde o contáctese con el 0800-444-1234.");
+            else{
+                availablePlanes.add(aircraft);
             }
-            return availablePlanes;
         }
+            return availablePlanes;
+    }
     //Seleccionador de avion deseado.
-    public Avion selectAirplaneByType(){
+    public Avion selectAirplaneByType(String date){
         
-        ArrayList<Avion> aircrafts = availablePlanes();
+        ArrayList<Avion> aircrafts = availablePlanes(date);
         Scanner input = new Scanner(System.in);
         boolean proseguir = true;
         Avion selectedAirplane = null;
@@ -114,7 +112,7 @@ public class AvionDAO {
         }
         
         while(proseguir == true){    
-            System.out.println("Seleccione el tipo de avión que desea:");
+            System.out.println("A continuación, se muestran los tipos de avión que hay disponibles. Seleccione el tipo de avión que desea:");
             
             if(bronze == true){
                 System.out.println("1.Bronze.");
@@ -131,8 +129,14 @@ public class AvionDAO {
                 case "1":
                     for(Avion airplane: aircrafts){
                         if(airplane instanceof Bronze){
+                            System.out.println(airplane.toString());                          
+                        }
+                    }
+                    System.out.println("Ingrese la patente del avión que desea elegir:");
+                    String patente = input.next();
+                    for(Avion airplane: aircrafts){
+                        if(airplane.getPatente().equals(patente)){
                             selectedAirplane = airplane;
-                            
                         }
                     }
                     proseguir = false;
@@ -140,6 +144,13 @@ public class AvionDAO {
                 case "2":
                     for(Avion airplane: aircrafts){
                         if(airplane instanceof Silver){
+                            System.out.println(airplane.toString());
+                        }
+                    }
+                    System.out.println("Ingrese la patente del avión que desea elegir:");
+                    String patente2 = input.next();
+                    for(Avion airplane: aircrafts){
+                        if(airplane.getPatente().equals(patente2)){
                             selectedAirplane = airplane;
                         }
                     }
@@ -148,6 +159,13 @@ public class AvionDAO {
                 case "3":
                     for(Avion airplane: aircrafts){
                         if(airplane instanceof Gold){
+                            System.out.println(airplane.toString());
+                        }
+                    }
+                    System.out.println("Ingrese la patente del avión que desea elegir:");
+                    String patente3 = input.next();
+                    for(Avion airplane: aircrafts){
+                        if(airplane.getPatente().equals(patente3)){
                             selectedAirplane = airplane;
                         }
                     }
@@ -162,8 +180,8 @@ public class AvionDAO {
         }
         return selectedAirplane;
     }
-    
-    }
+       
+}
     
   
   

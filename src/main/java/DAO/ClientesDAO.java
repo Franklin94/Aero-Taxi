@@ -11,6 +11,9 @@ import java.util.Scanner;
 
 public class ClientesDAO {
     
+    //Atributes:
+    private final String path = "\\clientes";
+    private final ObjectMapper mapper = new ObjectMapper();
     //CREADOR DE CLIENTES, VERIFICACIÓN DE EXISTENCIA, DAR DE BAJA CLIENTE.
     
     //Methods:
@@ -56,9 +59,7 @@ public class ClientesDAO {
     
     public ArrayList<Cliente> actualCliente(){
         
-        String path = "\\clientes";
         File file = new File(path);
-        ObjectMapper mapper = new ObjectMapper();
         ArrayList<Cliente> client = null;
         
         if(file.exists()){
@@ -77,10 +78,8 @@ public class ClientesDAO {
     
     public void guardarCliente(Cliente p){
         
-        String path = "\\clientes";
         File file = new File(path);
         ArrayList<Cliente> client = actualCliente();
-        ObjectMapper mapper = new ObjectMapper();
         
         if(client != null){
             

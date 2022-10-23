@@ -25,7 +25,7 @@ public class Sistema {
 
 //Methods:
     //Sign in:
-    public void signIn() throws IOException{
+    public void signIn() {
         
         String name;
         String surname;
@@ -86,7 +86,7 @@ public class Sistema {
         }
     }        
     //Log in:
-    public void logIn() throws IOException{
+    public void logIn() {
                 
         String dni, psw;//Datos solicitados para poder loguear.
         boolean access = true; //Da de alta el funcionamiento.
@@ -103,9 +103,9 @@ public class Sistema {
         //Buscar en el archivo al cliente cuyo dni coincida
         
         while(access == true){
-            if(file.exists()){//Verificando que la ruta ingresada existe.
+            if(file.exists()){//Verificando que la ruta ingresada exista.
 
-                try{
+            try{
                 //Lectura:
                 ObjectMapper mapper = new ObjectMapper();
 
@@ -115,12 +115,12 @@ public class Sistema {
                 if(psw.equals(psw2)){
                     
                     System.out.println("Bienvenido a AeroTaxi "+client.getNombre()+" "+client.getApellido());
-                    String ans = input.next();
-                    String ans2;
                     boolean access2 = true;
-                    
+                    //SE DEBERÍA DESPLEGAR ESTE MENÚ DE OPCIONES PARA EL CLIENTE COMÚN, NO PARA UN ADMIN DEL SISTEMA.
                     while(access2 == true){
                         System.out.println("Seleccione la acción que desea realizar:\n1.Consulta de vuelos disponibles.\n2.Ir a mis vuelos.\n3.Cancelaciones.");
+                        String ans = input.next();
+                        String ans2;
                         
                         switch(ans){
                             case "1":
@@ -172,7 +172,7 @@ public class Sistema {
                 e.getMessage();
                 e.getStackTrace();
                 System.out.println("El usuario ingresado no existe.");
-                System.out.println("¿Desea volver a intentar ingresar sus datos (marque 1) o reistrarse (marque 2)?\nPresione otra tecla para cancelar la operación.");
+                System.out.println("¿Desea volver a intentar ingresar sus datos (marque 1) o registrarse (marque 2)?\nPresione otra tecla para cancelar la operación.");
                 String answer = input.next();
 
                 switch(answer){
@@ -203,7 +203,7 @@ public class Sistema {
         //CONSULTA DE AVIONES DISPONIBLES.
         Scanner input = new Scanner(System.in);
         String date;
-        System.out.println("Ingrese la fecha (yyyy/mm/dd) en la que desea realizar su viaje:");
+        System.out.println("Ingrese la fecha (dd-mm-yyyy) en la que desea realizar su viaje:");
         date = input.next();
         departureDateValidate(date);//Funciona como flag para inicializar la operación Compra.
         ArrayList<Avion> availablePlanes;
@@ -215,8 +215,8 @@ public class Sistema {
         while(proseguir == true){
             if(departureDateValidate(date) == true){
 
-                LocalDate date2 = LocalDate.parse(date);
-                availablePlanes = a.availablePlanes(); 
+                LocalDate date2 = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                availablePlanes = a.availablePlanes(date); 
                 //Muestra de los destinos:
                 DestinosDAO destinations = new DestinosDAO();
                 System.out.println("Seleccione la localidad de origen del vuelo:");
@@ -251,20 +251,38 @@ public class Sistema {
                     }
                     else{
                         System.out.println("Lo lamentamos, de momento no hay aviones disponibles.");
-
+                        proseguir = false;
                     }
                     //CREAR UN VUELO Y COMPRARLO(PASAR POR LOS VALIDATES NECESARIOS)
                     //Consulta del precio de un vuelo:
-                    System.out.println("Ingrese el número de pasajeros que irán en el vuelo:");
-                    String cantpax = input.next();
-                    int cantPax = Integer.parseInt(cantpax);
-                    float price = priceCalculator(origen, destino,cantPax);//Precio del vuelo (price is already shown by the method)
-                    //Confirmar vuelo y luego introducir los datos de los acompañantes:
-                    Avion avion = a.selectAirplaneByType();
-                    confirmFlight(origen, destino, date2, avion, cantPax, price);
-                        if(confirmFlight(origen, destino, date2, avion, cantPax, price) == true){
-                            System.out.println("Vuelo confirmado correctamente. Muchas gracias por elegir AeroTaxi.");
+                    boolean continuar=true;
+                    while(continuar==true){
+                        
+                        System.out.println("Ingrese el número de pasajeros que irán en el vuelo:");
+                        String cantpax = input.next();
+                        int cantPax = Integer.parseInt(cantpax);
+
+                        boolean cantPaxOk = cantPaxValidate(cantPax,date);    
+                        if(cantPaxOk == true){
+                            float price = priceCalculator(origen, destino, cantPax, date);//Precio del vuelo (price is already shown by the method)
+                            //Confirmar vuelo y luego introducir los datos de los acompañantes:
+                            Avion avion = a.selectAirplaneByType(date);
+                            confirmFlight(origen, destino, date2, avion, cantPax, price);
+                            if(confirmFlight(origen, destino, date2, avion, cantPax, price) == true){
+                                avion.setDateOfUse(date2);
+                                System.out.println("Vuelo confirmado correctamente. Muchas gracias por elegir AeroTaxi.");
+                            }
                         }
+                        else{
+                            System.out.println("El n° de pasageros ingresados excede la capacidad de nuestros aviones disponibles.");
+                            System.out.println("¿Desea continuar?\nPresione 1 (uno) en caso afirmativo, o cualquier otra tecla en caso contrario.");
+                            String answer7 = input.next();
+                            if(!answer7.equals("1")){
+                                continuar = false;
+                            }
+                        }
+                    }
+                    
 
                 }
                 else{
@@ -272,7 +290,7 @@ public class Sistema {
                     String answer4 = input.next();
                     if(!answer4.equals("1")){
                         proseguir = false;
-                        System.out.println("Muchas gracias por visitar AeroTaxi.");
+                        System.out.println("Muchas gracias por utilizar AeroTaxi.");
                     }
                 }
 
@@ -331,6 +349,23 @@ public class Sistema {
         }
         return clientFlights;
     }
+    //Validador de cantidad de pasajeros solicitados:
+    private boolean cantPaxValidate(int cantPax, String date){
+        
+        AvionDAO a = new AvionDAO();
+        ArrayList<Avion> aircrafts = a.availablePlanes(date);
+        boolean existance = false;
+        
+        for(Avion plane: aircrafts){
+            if(plane.isAvailable() && plane.getMaxpax() <= cantPax ){
+                existance = true;
+            }
+        }
+        if(existance == false){
+            System.out.println("No hay aviones disponibles con esa capacidad de pasajeros.");
+        }
+        return existance;
+    }
     
     //Validador de fecha de solicitud de vuelo:
     public boolean departureDateValidate(String date){
@@ -360,7 +395,7 @@ public class Sistema {
     }
     
     //Calculadora de precios del vuelo.
-    public float priceCalculator(DestinosDAO.localidad origen, DestinosDAO.localidad destino, int cantpax){
+    public float priceCalculator(DestinosDAO.localidad origen, DestinosDAO.localidad destino, int cantpax, String date){
         
         //El origen y el destino ya fueron previamente validados.
         
@@ -369,7 +404,7 @@ public class Sistema {
         int cantkm = Q.cantidadKm(origen, destino);//Cantidad de kilómetros del vuelo.
         boolean bronze, silver, gold;
         bronze=silver=gold=false;
-        Avion aircraft = A.selectAirplaneByType();
+        Avion aircraft = A.selectAirplaneByType(date);
         
         
         if(aircraft instanceof Bronze){
@@ -381,7 +416,7 @@ public class Sistema {
         else if(aircraft instanceof Gold){
             gold = true;
         }
-        Avion airplane = A.selectAirplaneByType();
+        Avion airplane = A.selectAirplaneByType(date);
         float costoxkm =airplane.getCostoxkm();
         int tarifaxtype=0;
         
@@ -406,7 +441,7 @@ public class Sistema {
         System.out.println("Si desea confirmar el vuelo, presione 1(uno), o cualquier otra tecla en caso contrario.");
         String answer = input.next();
         boolean confirmation;
-
+        
         if(answer.equals("1")){
             
             ArrayList<Persona> passengers = addPax(cantPax);

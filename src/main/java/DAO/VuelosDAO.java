@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Avion;
+import Model.Cliente;
 import Model.Persona;
 import Model.Vuelos;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,16 +12,17 @@ import java.util.ArrayList;
 
 public class VuelosDAO {
     
+    //Atributes:
+    private final String path ="\\flights"; 
+    private ObjectMapper mapper;
     //CREADOR DE VUELOS, MODIFICADOR DE DATOS, PROGRAMACIÓN DE VUELOS, CANCELACIÓN DE VUELOS.
     
     
     //Saver de vuelos:
     public void flightSaver(Vuelos vuelo){
         
-        String path = "\\flights";
         File file = new File(path);
         ArrayList<Vuelos> flights = confirmedFlights();//revisamos si ya hay vuelos previamente guardados.
-        ObjectMapper mapper = new ObjectMapper();
        
         if(flights == null){
                     
@@ -32,7 +34,6 @@ public class VuelosDAO {
                 e.getMessage();
                 e.getStackTrace();
             }
-            System.out.println("El avión ha sido guardado exitosamente.");
         }
         else{
             flights.add(vuelo);
@@ -43,14 +44,11 @@ public class VuelosDAO {
                 e.getMessage();
                 e.getStackTrace();
             }
-            System.out.println("El vuelo ha sido guardado exitosamente.");
         }
     
     //Confirmed flights:
-    public ArrayList<Vuelos> confirmedFlights() {
+    public ArrayList<Vuelos> confirmedFlights() {//getAllFlights()
        
-        String path = "\\flights";
-        ObjectMapper mapper = new ObjectMapper();
         File file = new File(path);
         ArrayList<Vuelos> flights = null;
         
@@ -67,6 +65,61 @@ public class VuelosDAO {
         }
         return flights;
     }
-    
-    
+    public Vuelos getFlight(LocalDate departureDate, Cliente client){
+        
+        ArrayList<Vuelos> flights = confirmedFlights();
+        Vuelos outPutFlight = null;
+        
+        if(flights != null){
+            for(Vuelos f: confirmedFlights()){
+                if(f.getDepartureDate().equals(departureDate) && f.getPassengers().contains(client)){
+                    outPutFlight = f;
+                }
+            }
+        }
+        return outPutFlight;
+        
+    }
+    public void deleteFlight(Vuelos flight){
+        
+        File file = new File(path);
+        ArrayList<Vuelos> flights = confirmedFlights();
+        
+        if(flights != null){
+            for(Vuelos f: flights){
+                if(f.equals(flight)){
+                    flights.remove(f);
+                }
+            }
+        
+            try{
+                mapper.writeValue(file, flights);
+            }catch(IOException e){
+            }
+        }
+    }
+    public void modifyFlight(Vuelos flight,LocalDate departureDate, DestinosDAO.localidad origen, DestinosDAO.localidad destino, Avion avion, int paxconfirmados, String horario,ArrayList<Persona> passengers){
+        
+        File file = new File(path);
+        ArrayList<Vuelos> allFlights = confirmedFlights();
+        if(allFlights != null){
+            for(Vuelos v1: allFlights){
+                if(v1.equals(flight)){
+                    flight.setDestino(destino);
+                    flight.setAvion(avion);
+                    flight.setDepartureDate(departureDate);
+                    flight.setPassengers(passengers);
+                    flight.setOrigen(origen);
+                    flight.setHorario(horario);
+                }
+            }
+            try{
+                mapper.writeValue(file,allFlights);
+            }catch(IOException e){
+            
+            }
+        }
+        
+    }
+  
 }

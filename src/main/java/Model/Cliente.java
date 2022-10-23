@@ -6,7 +6,7 @@ public class Cliente extends Persona{
     //Atributes:
     
     private String password;//Contraseña para ingresar al sistema.
-    
+    private boolean active; //posibilidad de ingresar al sistema (borrado o no).
     
     //Methods:
 
@@ -18,6 +18,14 @@ public class Cliente extends Persona{
         
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     public String getNombre() {
         return super.name;
     }

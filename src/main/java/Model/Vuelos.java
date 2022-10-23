@@ -16,7 +16,7 @@ public class Vuelos {
     private String horario; //Hora del vuelo.
     private float tiempovuelo; //Tiempo de vuelo.
     private float costo;
-    private ArrayList<Persona> passengers; //Acompañantes del vuelo.
+    private ArrayList<Persona> passengers; //Personas que van en el vuelo.
     private boolean status; //Cancelado o confirmado.
     //Methods:
 

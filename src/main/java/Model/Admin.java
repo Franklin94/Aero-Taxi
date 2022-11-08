@@ -12,9 +12,10 @@ public class Admin extends Persona{
     
     //Methods:
 
-    public Admin(String name, String surname, String DNI, String age, String password) {
+    public Admin(String name, String surname, String DNI, String age, String password, boolean active) {
         super(name, surname, DNI, age);
         this.password = password;
+        this.active = active;
     }
 
     public Admin() {

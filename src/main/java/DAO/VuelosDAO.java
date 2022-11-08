@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class VuelosDAO {
     
     //Atributes:
-    private final String path ="\\flights"; 
+    private final String path ="flights"; 
     private ObjectMapper mapper;
     //CREADOR DE VUELOS, MODIFICADOR DE DATOS, PROGRAMACIÓN DE VUELOS, CANCELACIÓN DE VUELOS.
     

@@ -20,7 +20,7 @@ public class AvionDAO {
     //Método para levantar los aviones pre-existentes:
     public ArrayList<Avion> actualAvion(){
         
-        String path = "\\airplanes";
+        String path = "airplanes";
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(path);
         ArrayList<Avion> planes = null;
@@ -72,15 +72,14 @@ public class AvionDAO {
         }
     //Aviones disponibles para realizar vuelos:
         
-    public ArrayList<Avion> availablePlanes(String date){
+    public ArrayList<Avion> availablePlanes(LocalDate date){
             
-        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yy"));
         ArrayList<Avion> allPlanes = actualAvion();
         ArrayList<Avion> availablePlanes = null;
         int k=0;
             
         for(Avion aircraft: allPlanes){
-            if(aircraft.getDateOfUse().equals(parsedDate)){
+            if(aircraft.getDateOfUse().equals(date)){
                 aircraft.setAvailable(false);
             }
             else{
@@ -92,7 +91,8 @@ public class AvionDAO {
     //Seleccionador de avion deseado.
     public Avion selectAirplaneByType(String date){
         
-        ArrayList<Avion> aircrafts = availablePlanes(date);
+        LocalDate departureDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        ArrayList<Avion> aircrafts = availablePlanes(departureDate);
         Scanner input = new Scanner(System.in);
         boolean proseguir = true;
         Avion selectedAirplane = null;

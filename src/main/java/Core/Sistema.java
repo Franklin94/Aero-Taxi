@@ -77,7 +77,7 @@ public class Sistema {
         ans = input.next();
         switch(ans){
             case "1":
-                logIn();
+                logIn(dni,psw);
                 break;
             default:
                 System.out.println("Gracias por confiar en Aerotaxi. ¡Hasta pronto!");
@@ -86,24 +86,18 @@ public class Sistema {
         }
     }        
     //Log in:
-    public void logIn() {
+    public void logIn(String DNI, String password) {
                 
-        String dni, psw;//Datos solicitados para poder loguear.
         boolean access = true; //Da de alta el funcionamiento.
         Scanner input = new Scanner(System.in);
         Cliente p;
-        System.out.println("Ingrese su n° de DNI por favor:");
-        dni = input.next();
-        System.out.println("Ingrese su contraseña por favor:");
-        psw = input.next();
-        String path = "\\dni";
+        String path = "clientes";
         File file = new File(path);
         String psw2;
-        int k=0;
         //Buscar en el archivo al cliente cuyo dni coincida
         
         while(access == true){
-            if(file.exists()){//Verificando que la ruta ingresada exista.
+            //if(file.exists()){//Verificando que la ruta ingresada exista.
 
             try{
                 //Lectura:
@@ -112,7 +106,7 @@ public class Sistema {
                 Cliente client = mapper.readValue(file, Cliente.class);
                 psw2 = client.getPassword();
 
-                if(psw.equals(psw2)){
+                if(password.equals(psw2)){
                     
                     System.out.println("Bienvenido a AeroTaxi "+client.getNombre()+" "+client.getApellido());
                     boolean access2 = true;
@@ -133,7 +127,7 @@ public class Sistema {
                                 }
                                 break;
                             case "2":
-                                consultarMisVuelos(dni);//ArrayList de los vuelos del cliente.
+                                consultarMisVuelos(DNI);//ArrayList de los vuelos del cliente.
                                 System.out.println("¿Desea realizar alguna otra operación?\n1.Sí\n2.No (presione cualquier otra tecla)");
                                 ans2 = input.next();
                                 if(!ans2.equals("1")){
@@ -142,12 +136,12 @@ public class Sistema {
                                 }
                                 break;
                             case "3":
-                                ArrayList<Vuelos> myFlights = consultarMisVuelos(dni);
+                                ArrayList<Vuelos> myFlights = consultarMisVuelos(DNI);
                                 System.out.println("Seleccione el vuelo que desea cancelar:");
                                 String ans3 = input.next();
                                 int index = Integer.parseInt(ans3);
                                 Vuelos vuelo = myFlights.get(index-1);
-                                cancelarVuelo(vuelo,dni);
+                                cancelarVuelo(vuelo,DNI);
                                 System.out.println("¿Desea realizar alguna otra operación?\n1.Sí\n2.No (presione cualquier otra tecla)");
                                 ans2 = input.next();
                                 if(!ans2.equals("1")){
@@ -162,7 +156,7 @@ public class Sistema {
                     }
                 }
                 else{
-                    while(!psw.equals(psw2)){
+                    while(!password.equals(psw2)){
                         System.out.println("La contraseña ingresada es incorrecta. Por favor, ingrésela nuevamente:");
                         psw2 = input.next();
                     }
@@ -188,7 +182,7 @@ public class Sistema {
                         break;
                 }
             }
-        }//Log out:
+        //}//Log out:
             System.out.println("¿Desea realizar alguna otra operación?\nSeleccione 1(uno) en caso afirmativo o cualquier otra tecla en caso contrario.");
             String answer6 = input.next();
             if(!answer6.equals("1")){
@@ -205,6 +199,8 @@ public class Sistema {
         String date;
         System.out.println("Ingrese la fecha (dd-mm-yyyy) en la que desea realizar su viaje:");
         date = input.next();
+        System.out.println(date);
+        LocalDate departureDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         departureDateValidate(date);//Funciona como flag para inicializar la operación Compra.
         ArrayList<Avion> availablePlanes;
         AvionDAO a = new AvionDAO();
@@ -216,7 +212,7 @@ public class Sistema {
             if(departureDateValidate(date) == true){
 
                 LocalDate date2 = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                availablePlanes = a.availablePlanes(date); 
+                availablePlanes = a.availablePlanes(departureDate); 
                 //Muestra de los destinos:
                 DestinosDAO destinations = new DestinosDAO();
                 System.out.println("Seleccione la localidad de origen del vuelo:");
@@ -353,7 +349,8 @@ public class Sistema {
     private boolean cantPaxValidate(int cantPax, String date){
         
         AvionDAO a = new AvionDAO();
-        ArrayList<Avion> aircrafts = a.availablePlanes(date);
+        LocalDate departureDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        ArrayList<Avion> aircrafts = a.availablePlanes(departureDate);
         boolean existance = false;
         
         for(Avion plane: aircrafts){
@@ -371,20 +368,22 @@ public class Sistema {
     public boolean departureDateValidate(String date){
     
         LocalDate today = LocalDate.now();
-        LocalDate departureDate = LocalDate.parse(date);
+        LocalDate departureDate;
+        departureDate = LocalDate.parse(date,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         boolean answer;
         
-        if(today.isBefore(departureDate)) {
+        if(today.isAfter(departureDate)) {
             System.out.println("Fecha solicitada no válida.\n¡No puede ingresar una fecha del pasado!");
             answer = false;
-        } else if(today.isAfter(departureDate)){
+        }
+        else if(today.isBefore(departureDate)){
             answer = true;
         }
         else{
             System.out.println("El vuelo debe ser reservado con al menos 1 día de anticipación.");
             answer = false;
         }
-        return answer;      
+        return answer;
         
     }
     public boolean destinationValidate(DestinosDAO.localidad departure, DestinosDAO.localidad destination){
@@ -504,6 +503,9 @@ public class Sistema {
             }
         
         return flag;    
+    }
+    public boolean personaValidate(Persona persona){
+        
     }
     
 }

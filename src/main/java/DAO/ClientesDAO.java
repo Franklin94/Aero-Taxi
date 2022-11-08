@@ -2,7 +2,6 @@ package DAO;
 
 import Core.Sistema;
 import Model.Cliente;
-import Model.Persona;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.Scanner;
 public class ClientesDAO {
     
     //Atributes:
-    private final String path = "\\clientes";
+    private final String path = "clientes";
     private final ObjectMapper mapper = new ObjectMapper();
     //CREADOR DE CLIENTES, VERIFICACIÓN DE EXISTENCIA, DAR DE BAJA CLIENTE.
     
@@ -86,6 +85,7 @@ public class ClientesDAO {
             client.add(p);
             try{
                 mapper.writeValue(file, client);
+                
 
             }catch(IOException e){
                 e.getMessage();
@@ -100,8 +100,7 @@ public class ClientesDAO {
                 e.getMessage();
                 e.getStackTrace();
             }
-        }
-        System.out.println("¡Usuario guardado exitosamente!");    
+        }    
     }
     
 }
